@@ -1,0 +1,27 @@
+#week08-2.py 學習計畫 Binary Search 第1題
+#給你guess() 你可以呼叫他, 找出1....n 裡面的 答案
+# The guess API is already defined for you.
+# @param num, your guess
+# @return -1 if num is higher than the picked number
+#          1 if num is lower than the picked number
+#          otherwise return 0
+# def guess(num: int) -> int:
+
+class Solution:
+    def guessNumber(self, n: int) -> int:
+        #另一種寫法
+        #for i in range(n+1): print( -guess(i), end=' ' ) #做個實驗 考試不用寫!
+        return bisect_left( range(n+1), 0, key=lambda x:-guess(x) ) #一行抵下面7行
+        #for i in range(1, n+1): #錯誤的暴力法 for迴圈找答案
+        #   if guess(i)==0: return i # 猜中了 答案是i
+        #不能用上面的for迴圈 因為n有20億那麼大 試不完
+        #要用小學 猜數字 每次範圍猜一半 比他大、比她小 縮小範圍
+        #方法二: while left < right: 去逼近
+        left, right = 1, n #左右的範圍(左包含 、 右不包含)
+        while left < right: #左右的範圍還沒有 撞在一起
+            mid = (left + right) // 2 #(猜)中間的數
+            if guess(mid)==0: return mid #猜到中間的數字
+            if guess(mid)>0: left = mid + 1 #(暗示你)再高一點 (中點設成下界)
+            else: right = mid #(暗示你) 再低點 (中點設成上界)
+        return left
+        #week08-3 是要在紙上 把這題 Easy 題的 left, right, mid跟猜的數字搞懂
